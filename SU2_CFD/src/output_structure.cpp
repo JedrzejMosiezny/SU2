@@ -11893,9 +11893,9 @@ void COutput::LoadLocalData_Flow(CConfig *config, CGeometry *geometry, CSolver *
 
         /*--- Load data for vorticity. ---*/
         if (Kind_Solver == RANS || Kind_Solver == NAVIER_STOKES){
-          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->[iPoint]->GetVorticity()[0]; iVar++ 
-          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->[iPoint]->GetVorticity()[1]; iVar++
-          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->[iPoint]->GetVorticity()[2]; iVar++
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->node[iPoint]->GetVorticity()[0]; iVar++; 
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->node[iPoint]->GetVorticity()[1]; iVar++;
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->node[iPoint]->GetVorticity()[2]; iVar++;
         }
         
         /*--- New variables can be loaded to the Local_Data structure here,
