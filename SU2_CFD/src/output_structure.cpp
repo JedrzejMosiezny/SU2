@@ -11651,6 +11651,12 @@ void COutput::LoadLocalData_Flow(CConfig *config, CGeometry *geometry, CSolver *
         Variable_Names.push_back("<greek>g</greek><sub>BC</sub>");
       }
     }
+    if (Kind_Solver == RANS || Kind_Solver == NAVIER_STOKES){
+      nVar_Par += 3;
+      Variable_Names.push_back("Vorticity_x");
+      Variable_Names.push_back("Vorticity_y");
+      Variable_Names.push_back("Vorticity_z");
+    }
 
     /*--- New variables get registered here before the end of the loop. ---*/
 
@@ -11875,6 +11881,12 @@ void COutput::LoadLocalData_Flow(CConfig *config, CGeometry *geometry, CSolver *
 
         if (transition) {
           Local_Data[jPoint][iVar] = solver[TURB_SOL]->node[iPoint]->GetGammaBC(); iVar++;
+        }
+
+        if (Kind_Solver == RANS || Kind_Solver == NAVIER_STOKES){
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->node[iPoint]->GetVorticity()[0]; iVar++;
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->node[iPoint]->GetVorticity()[1]; iVar++;
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->node[iPoint]->GetVorticity()[2]; iVar++;
         }
 
         /*--- New variables can be loaded to the Local_Data structure here,
