@@ -8064,6 +8064,8 @@ public:
    */
   void SetOmega_Max(su2double val_omega_max);
   
+  void SetVorticity_Integral(CGeometry *geometry, CConfig* config);
+
 };
 
 /*!

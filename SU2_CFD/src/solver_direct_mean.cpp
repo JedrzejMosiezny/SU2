@@ -18746,3 +18746,35 @@ void CNSSolver::BC_Isothermal_Wall(CGeometry *geometry, CSolver **solver_contain
     }
   }
 }
+
+void CNSSolver::SetVorticity_Integral(CGeometry *geometry, CConfig *config){
+
+  unsigned short iMarker, iDim;
+  unsigned long iVertex, iPoint;
+  su2double Area = 0;
+  su2double *Normal;
+  su2double *Vorticity;
+  Total_Custom_ObjFunc = 0;
+  su2double Vorticity_Temp = 0.0;
+  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++){
+    if (config->GetMarker_All_KindBC(iMarker) == INTERNAL_BOUNDARY){
+      for (iVertex = 0; iVertex < geometry->GetnVertex(iMarker); iVertex++){
+        iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
+        Normal = geometry->vertex[iMarker][iVertex]->GetNormal();
+        Area = 0;
+        for (iDim = 0; iDim < nDim; iDim++){
+          Area += Normal[iDim]*Normal[iDim];
+        }
+        Area = sqrt(Area);
+        Vorticity = node[iPoint]->GetVorticity();
+        Vorticity_Temp = 0.0;
+        for (iDim = 0 ; iDim < 3; iDim++){
+          Vorticity_Temp += Vorticity[iDim]*Vorticity[iDim];
+        }
+
+        Total_Custom_ObjFunc += Vorticity_Temp*Area*config->GetTime_Ref();
+
+      }
+    }
+  }
+}
