@@ -11652,6 +11652,14 @@ void COutput::LoadLocalData_Flow(CConfig *config, CGeometry *geometry, CSolver *
       }
     }
 
+    /*--- Add vorticity. ---*/
+
+    if (Kind_Solver == RANS || Kind_Solver == NAVIER_STOKES){
+      navr_Par += 3;
+      Variable_Names.push_back("Vorticity_x");
+      Variable_Names.push_back("Vorticity_y");
+      Variable_Names.push_back("Vorticity_z");
+    }
     /*--- New variables get registered here before the end of the loop. ---*/
 
   }
@@ -11877,6 +11885,13 @@ void COutput::LoadLocalData_Flow(CConfig *config, CGeometry *geometry, CSolver *
           Local_Data[jPoint][iVar] = solver[TURB_SOL]->node[iPoint]->GetGammaBC(); iVar++;
         }
 
+        /*--- Load data for vorticity. ---*/
+        if (Kind_Solver == RANS || Kind_Solver == NAVIER_STOKES){
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->[iPoint]->GetVorticity()[0]; iVar++ 
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->[iPoint]->GetVorticity()[1]; iVar++
+          Local_Data[jPoint][iVar] = solver[FLOW_SOL]->[iPoint]->GetVorticity()[2]; iVar++
+        }
+        
         /*--- New variables can be loaded to the Local_Data structure here,
          assuming they were registered above correctly. ---*/
         
