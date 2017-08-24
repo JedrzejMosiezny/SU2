@@ -3707,6 +3707,7 @@ public:
    */
   virtual void SetFreeStream_TurboSolution(CConfig *config);
 
+  virtual void SetVorticity_Integral(CGeometry *geometry, CConfig* config);
 
 };
 
